@@ -1,7 +1,6 @@
 #include<iostream>
 #include<sstream>
 
-//std::bind
 //std::function
 //linklist
 //queue
