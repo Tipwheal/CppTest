@@ -2,7 +2,8 @@
 #define _PHONE_FACTORY_H_
 
 class PhoneFactory {
-	//mingtianjixu 
+public:
+	
 };
 
 #endif //_PHONE_FACTORY_H_

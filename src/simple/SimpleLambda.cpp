@@ -2,7 +2,7 @@
 
 using namespace std;
 
-// 记得用c++11以上的标准…
+// 记得用c++11或以上的标准…
 
 int main() {
 	string name = "hello";
@@ -19,4 +19,7 @@ int main() {
 	noParam();
 	outName();
 	outRef(2);
+
+	cout << endl << "new test:" << endl;
+	[](){cout << "in test";}();				//这样也是可以的
 }
