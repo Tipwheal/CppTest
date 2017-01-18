@@ -13,7 +13,10 @@ public:
 	int getSize();
 	int operator[](int index);
 	int getValue();
-	Determinant *getRemainder(int row,int col);
+	Determinant* getRemainder(int row,int col);
+	Determinant* operator+(const Determinant& another);
+	Determinant* operator-();
+	Determinant* operator-(const Determinant& another);
 };
 
 void Determinant::input(int size,int *data) {
@@ -67,6 +70,24 @@ Determinant* Determinant::getRemainder(int row,int col) {
 	return d;
 }
 
+Determinant* Determinant::operator+(const Determinant& another) {
+	if(this -> size != another.size) return NULL;
+	int *data = new int[size*size];	
+	for(int i = 0;i<size*size;i++) {
+		data[i] = (this -> data)[i] + another.data[i];
+	}
+	Determinant *result = new Determinant(size,data);
+	return result;
+}
+
+Determinant* Determinant::operator-() {
+
+}
+
+Determinant* Determinant::operator-(const Determinant& another) {
+
+}
+
 int main() {
 	int *data = new int[9]{1,2,4,2,4,8,7,8,8};
 	Determinant a(3,data);
@@ -77,7 +98,5 @@ int main() {
 	for(int i = 0;i<another -> getSize()*another -> getSize();i++) {
 		cout << (*another)[i] << endl;
 	}
-	//cout << "size" << a.getSize();
-	//cout << another -> getValue();
-	cout << "value" <<a.getValue();
+	cout << "value" <<a.getValue() << endl;
 }
