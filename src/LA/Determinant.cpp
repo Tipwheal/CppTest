@@ -1,5 +1,7 @@
 #include<iostream>
 
+//啊，有时间再改
+
 using namespace std;
 
 class Determinant {
@@ -81,22 +83,28 @@ Determinant* Determinant::operator+(const Determinant& another) {
 }
 
 Determinant* Determinant::operator-() {
-
+	int *data = new int[size*size];
+	for(int i = 0;i<size*size;i++) {
+		data[i] = -(*this)[i];
+	}
+	return new Determinant(size,data);
 }
 
 Determinant* Determinant::operator-(const Determinant& another) {
-
+	if(this -> size != another.size) return NULL;
+	int *data = new int[size*size];	
+	for(int i = 0;i<size*size;i++) {
+		data[i] = (this -> data)[i] - another.data[i];
+	}
+	Determinant *result = new Determinant(size,data);
+	return result;
 }
 
 int main() {
-	int *data = new int[9]{1,2,4,2,4,8,7,8,8};
-	Determinant a(3,data);
-	for(int i = 0;i<a.getSize()*a.getSize();i++) {
-		cout << a[i] << endl;
-	}
-	Determinant *another = a.getRemainder(0,2);
-	for(int i = 0;i<another -> getSize()*another -> getSize();i++) {
-		cout << (*another)[i] << endl;
-	}
-	cout << "value" <<a.getValue() << endl;
+	int *first = new int[9]{1,2,4,2,4,8,7,8,8};
+	int *secont = new int[9]{1,2,4,2,4,5,7,8,8};
+	Determinant a(3,first);
+	Determinant b(3,first);
+	Determinant *c = a - b;
+	cout << c -> getValue();
 }
