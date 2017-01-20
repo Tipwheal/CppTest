@@ -55,25 +55,19 @@ using namespace std;
 
 struct Input {
 	int *data;
+	int left;
 	int right;
 	int times;
-	Input(int *data,int a,int b):data(data),right(a),times(b){}
+	Input(int *data,int a,int b,int c):data(data),left(a),right(b),times(c){}
 };
 
-Input input() {
+//do input is ok
+Input doInput() {
 	int *left = new int[7];
 	for(int i = 0;i<7;i++) {
 		left[i] = -1;
 	}
-	//a ............................. to be continue
-}
-
-int main() {
-	int *left = new int[7];		//left is input number
-	for(int i = 0;i<7;i++) {
-		left[i] = -1;
-	}
-	int *ptr = 0;
+	int ptr = 0;
 	char tmp = 0;
 	int leftLength = 6;
 	for(int i = 0;i<6;i++) {
@@ -85,10 +79,171 @@ int main() {
 			leftLength = i;
 		}
 	}
-	delete ptr;
-	//
-	for(int *p = left;*p != -1;p++) {
-		if(p == left + leftLength) cout << ".";
+	int times;
+	cin >> times;
+	int right = 0;
+	if(leftLength != 6) {
+		right = 5 - leftLength;
+	}
+	return Input(left,leftLength,5 - leftLength,times);
+}
+
+//i should learn gdb,fuck...
+//data 12345
+//result 12345
+//tmp 00000
+//recordLength 0
+//p data
+//q result
+//cur 0
+//add 0
+//total 1
+//add 0
+//tmp 1
+//recordLength 1
+//q result+1
+//cur 1
+//total 2
+//tmp 12
+//add 0
+//recordLength 2
+//q result+2
+//cur 2
+//total 3
+//tmp 123
+//add 0
+//recordLength 3
+//q result+3
+//cur 3
+//total 4
+//tmp 1234
+//add 0
+//recordLength 4
+//q result+4
+//cur 4
+//total 5
+//tmp 12345
+//add 0
+//recordLength 5
+//q result+5
+//p data+1
+//q result
+//cur 1
+//total 2
+//add 0
+//tmp 14345
+//ptr tmp+1
+//q result + 1
+//cur 2
+//total 4
+//add 0
+//tmp 14745
+//ptr tmp+2
+//q result + 2
+//cur 3
+//total 6
+//add 0
+//tmp 147(10)5
+//ptr tmp+3
+//tmp 14705
+//tmp 14706
+//q result + 3;
+//cur 4
+//total 8
+//add 0
+//tmp 1470(14)
+//ptr tmp+4
+//tmp 14704
+//tmp 147041
+//recordLength 6
+//q result + 4
+
+//data 12345-1
+//result 12345-1
+//recordLength 7
+//tmp 1470411
+//p data+2
+//add 0
+//q result+5
+//cur 6
+//total 10
+//ptr tmp+5
+
+
+void calcForOneTime(int *data,int *result) {
+	int recordLength = 0;
+	int *tmp = new int[10000];
+	for(int *p = data;*p != -1;p++) {
+		int add = 0;//daozheli
+		int *q;
+		for(q = result;*q!= -1;q++) {
+			int cur = (p - data) + (q - result);
+			int total = p[0]*q[0] + add;
+			add = total / 10;
+			if(cur >= recordLength) {
+				tmp[cur] = total%10;
+				recordLength = cur + 1;
+			}else {
+				tmp[cur] += total%10;
+				int *ptr = &tmp[cur];
+				while(*ptr >= 10) {
+					ptr[0] -= 10;
+					if(&ptr[1] >= tmp + recordLength) {
+						ptr[1] = 1;
+						recordLength++;
+					}else {
+						ptr[1] += 1;
+					}
+					ptr++;
+				}
+			}
+		}
+		if(add > 0) {
+			int cur = (p - data) + (q - result);
+			if(cur >= recordLength) {
+				tmp[cur] = add;
+				recordLength++;
+			}else {
+				tmp[cur] += add;
+				int *ptr = &tmp[cur];
+				while(*ptr >= 10) {
+					ptr[0] -= 10;
+					if(&ptr[1] >= tmp + recordLength) {
+						ptr[1] = 1;
+						recordLength++;
+					}else {
+						ptr[1] += 1;
+					}
+					ptr++;
+				}
+			}
+		}
+	}
+	for(int i = 0;i<recordLength;i++) {
+		result[i] = tmp[i];
+	}
+	result[recordLength] = -1;
+	delete tmp;
+}
+
+//zero 1
+//1 reverse input
+//>1 multiply
+
+//now
+//1 -1
+//1.2345
+//point to 5
+//result should be 54321
+
+
+//redo later
+int main() {
+	//Input input = doInput(); //do this later
+	int *data = new int[6]{1,2,3,4,5,-1};
+	int *result = new int[10000]{1,2,3,4,5,-1};
+	calcForOneTime(data,result);
+	for(int *p = result;*p != -1;p++) {
 		cout << *p;
 	}
 }
